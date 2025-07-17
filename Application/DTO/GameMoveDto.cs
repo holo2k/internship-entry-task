@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Application.DTO
+{
+    public class GameMoveDto
+    {
+        public int Id { get; set; }
+        public int GameId { get; set; }
+        public int PointX { get; set; }
+        public int PointY { get; set; }
+        public char PlacedSymbol { get; set; }
+        public bool IsSwapped { get; set; }
+        public string IdempotencyKey { get; set; }
+        public DateTime CreatedAt { get; set; }
+    }
+}
