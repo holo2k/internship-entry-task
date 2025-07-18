@@ -56,7 +56,7 @@ docker-compose up --build
 
 ## API Основные эндпоинты
 
-### POST `/games`
+### POST `/api/games/create`
 
 Создание новой игры. Параметры игры подтягиваются из окружения.
 
@@ -76,13 +76,13 @@ docker-compose up --build
 
 ---
 
-### POST `/games/{id}/moves`
+### POST `/api/moves/make-move/{gameId}`
 
-Выполнить ход в игре с ID = `{id}`, X = `{x}`, Y = `{y}` 
+Выполнить ход в игре с ID = `{gameId}`, X = `{x}`, Y = `{y}` 
 
 ```
 curl -X 'POST' \
-  'http://localhost:8080/api/moves/make-move/{id}?x={x}&y={y}' \
+  'http://localhost:8080/api/moves/make-move/{gameId}?x={x}&y={y}' \
   -H 'accept: text/plain' \
   -H 'Idempotency-Key: key135413245asdf' \
   -d ''
@@ -90,9 +90,15 @@ curl -X 'POST' \
 
 ---
 
-### GET `/games/{id}`
+### GET `/api/games/{id}`
 
 Получить текущее состояние игры по ID.
+
+---
+
+### GET `/api/moves/{gameId}`
+
+Получить текущее состояние ходов в игре по ID игры.
 
 ---
 
