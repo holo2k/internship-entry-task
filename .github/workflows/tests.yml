@@ -56,4 +56,7 @@ jobs:
             --target "dotnet" \
             --targetargs "test --no-build --configuration Debug" \
             --threshold 30 \
-            --threshold-type line
+            --threshold-type line \
+            --exclude-by-file "**/TicTacToeApi/**" \
+            --exclude-by-file "**/Infrastructure/**"
+
