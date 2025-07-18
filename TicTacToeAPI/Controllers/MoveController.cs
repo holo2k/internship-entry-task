@@ -46,7 +46,15 @@ namespace TicTacToeApi.Controllers
 
             try
             {
-                var result = await moveService.MakeMoveAsync(gameId, x, y, idempotencyKey);
+                MoveCommand command = new MoveCommand() 
+                { 
+                    GameId = gameId,
+                    X = x,
+                    Y = y,
+                    IdempotencyKey = idempotencyKey
+                };
+
+                var result = await moveService.MakeMoveAsync(command);
                 var etag = GenerateETag(result);
                 var ifNoneMatch = Request.Headers["If-None-Match"].ToString();
                 if (ifNoneMatch == $"\"{etag}\"")

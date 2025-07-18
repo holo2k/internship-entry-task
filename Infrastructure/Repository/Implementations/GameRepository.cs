@@ -1,4 +1,4 @@
-﻿using Domain;
+﻿using Shared;
 using Domain.Entities;
 using Infrastructure.Data;
 using Infrastructure.Repository.Abstractions;

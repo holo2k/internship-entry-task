@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace Domain
+namespace Shared
 {
     public static class Constants
     {

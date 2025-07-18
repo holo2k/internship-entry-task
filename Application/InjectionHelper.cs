@@ -1,5 +1,7 @@
 ﻿using Application.Services.Abstractions;
 using Application.Services.Implementations;
+using Application.Validation;
+using FluentValidation;
 using Infrastructure.Data;
 using Infrastructure.Repository.Abstractions;
 using Infrastructure.Repository.Implementations;
@@ -29,6 +31,9 @@ namespace Application
         {
             services.AddScoped<IMoveService, MoveService>();
             services.AddScoped<IGameService, GameService>();
+            services.AddScoped<IRandomProvider, DefaultRandomProvider>();
+
+            services.AddValidatorsFromAssemblyContaining<MoveCommandValidator>();
 
             return services;
         }

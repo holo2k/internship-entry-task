@@ -1,6 +1,7 @@
 using Application;
 using DotNetEnv;
 using Infrastructure.Data;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 
@@ -46,7 +47,21 @@ internal class Program
     {
         var connStr = Environment.GetEnvironmentVariable("ConnectionStrings__Default");
 
-        services.AddControllers();
+        services
+            .AddControllers()
+            .ConfigureApiBehaviorOptions(options =>
+            {
+                options.InvalidModelStateResponseFactory = context =>
+                {
+                    var problemDetails = new ValidationProblemDetails(context.ModelState)
+                    {
+                        Status = StatusCodes.Status400BadRequest,
+                        Type = "https://tools.ietf.org/html/rfc7807",
+                        Title = "Некорректный запрос"
+                    };
+                    return new BadRequestObjectResult(problemDetails);
+                };
+            });
         services.AddProblemDetails();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();

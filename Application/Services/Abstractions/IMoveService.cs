@@ -10,7 +10,7 @@ namespace Application.Services.Abstractions
 {
     public interface IMoveService
     {
-        Task<MoveResult> MakeMoveAsync(int gameId, int x, int y, string idempotencyKey);
+        Task<MoveResult> MakeMoveAsync(MoveCommand moveCommand);
         Task<IReadOnlyList<GameMoveDto>> GetMovesAsync(int gameId);
     }
 }

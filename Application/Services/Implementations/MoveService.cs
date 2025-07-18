@@ -1,14 +1,11 @@
 ﻿using Application.DTO;
 using Application.Models;
 using Application.Services.Abstractions;
-using Domain;
+using Application.Validation;
 using Domain.Entities;
+using FluentValidation;
 using Infrastructure.Repository.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Shared;
 
 namespace Application.Services.Implementations
 {
@@ -16,11 +13,13 @@ namespace Application.Services.Implementations
     {
         private readonly IMoveRepository moveRepository;
         private readonly IGameRepository gameRepository;
+        private readonly IRandomProvider randomProvider;
 
-        public MoveService(IMoveRepository moveRepository, IGameRepository gameRepository)
+        public MoveService(IMoveRepository moveRepository, IGameRepository gameRepository, IRandomProvider randomProvider)
         {
             this.moveRepository = moveRepository;
             this.gameRepository = gameRepository;
+            this.randomProvider = randomProvider;
         }
 
         public async Task<IReadOnlyList<GameMoveDto>> GetMovesAsync(int gameId)
@@ -29,9 +28,9 @@ namespace Application.Services.Implementations
             return moves.Select(MapToDto).ToList();
         }
 
-        public async Task<MoveResult> MakeMoveAsync(int gameId, int x, int y, string idempotencyKey)
+        public async Task<MoveResult> MakeMoveAsync(MoveCommand cmd)
         {
-            var existingMove = await moveRepository.GetMoveByIdempotencyKeyAsync(idempotencyKey);
+            var existingMove = await moveRepository.GetMoveByIdempotencyKeyAsync(cmd.IdempotencyKey);
             if (existingMove != null)
             {
                 return new MoveResult
@@ -42,26 +41,28 @@ namespace Application.Services.Implementations
                 };
             }
 
-            var game = await gameRepository.GetByIdAsync(gameId);
-            if (game == null) throw new ArgumentException("Игра не найдена");
+            var validator = new MoveCommandValidator(gameRepository);
+            var validationResult = await validator.ValidateAsync(cmd);
+            if (!validationResult.IsValid)
+                throw new ValidationException(validationResult.Errors);
+
+            var game = await gameRepository.GetByIdAsync(cmd.GameId);
 
             var board = BuildBoardMatrix(game.Moves.ToList(), game.BoardSize);
-            if (board[x, y] != '-') throw new Exception("Клетка уже занята");
-
-            bool isSwapped = new Random().NextDouble() < Constants.ENEMY_MOVE_CHANCE;
+            bool isSwapped = randomProvider.NextDouble() < Constants.ENEMY_MOVE_CHANCE;
 
             var symbol = game.CurrentTurnPlayerNumber == Constants.FIRST_PLAYER ? 'X' : '0';
             var placedSymbol = isSwapped ? (symbol == 'X' ? '0' : 'X') : symbol;
-            board[x, y] = placedSymbol;
+            board[cmd.X, cmd.Y] = placedSymbol;
 
             var move = new GameMoveEntity
             {
                 GameId = game.Id,
-                PointX = x,
-                PointY = y,
+                PointX = cmd.X,
+                PointY = cmd.Y,
                 PlacedSymbol = placedSymbol,
                 IsSwapped = isSwapped,
-                IdempotencyKey = idempotencyKey,
+                IdempotencyKey = cmd.IdempotencyKey,
                 CreatedAt = DateTime.UtcNow
             };
 
@@ -97,6 +98,7 @@ namespace Application.Services.Implementations
                 IsGameOver = status is GameStatus.Draw or GameStatus.Won1 or GameStatus.Won2
             };
         }
+
 
         public static char[,] BuildBoardMatrix(List<GameMoveEntity> moves, int size)
         {
