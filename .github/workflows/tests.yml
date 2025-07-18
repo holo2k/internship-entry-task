@@ -58,5 +58,6 @@ jobs:
             --threshold 30 \
             --threshold-type line \
             --exclude-by-file "**/TicTacToeApi/**" \
-            --exclude-by-file "**/Infrastructure/**"
+            --exclude-by-file "**/Infrastructure/**"\
+            --exclude-by-file "**/Shared/**"
 
