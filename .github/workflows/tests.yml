@@ -31,12 +31,13 @@ jobs:
           name: coverage-results
           path: ./TestResults
 
+      - name: Install ReportGenerator tool
+        run: dotnet tool install --global dotnet-reportgenerator-globaltool
+
       - name: Generate coverage report
-        uses: danielpalme/ReportGenerator@v5.1.23
-        with:
-          reports: './TestResults/*/coverage.cobertura.xml'
-          targetdir: './coverage-report'
-          reporttypes: 'Html'
+        run: |
+          export PATH="$PATH:/home/runner/.dotnet/tools"
+          reportgenerator -reports:'./TestResults/*/coverage.cobertura.xml' -targetdir:'./coverage-report' -reporttypes:Html
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
@@ -48,7 +49,7 @@ jobs:
         run: |
           dotnet tool install --global coverlet.console
           export PATH="$PATH:/home/runner/.dotnet/tools"
-          coverlet ./path/to/your/test/project/bin/Debug/net7.0/YourTestProject.dll \
+          coverlet ./TicTacToe.Tests/bin/Debug/net9.0/TicTacToe.Tests.dll \
             --target "dotnet" \
             --targetargs "test --no-build" \
             --threshold 30 \
