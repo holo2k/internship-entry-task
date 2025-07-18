@@ -17,7 +17,7 @@ jobs:
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '9.0.7'
+          dotnet-version: '9.0.302'
 
       - name: Restore dependencies
         run: dotnet restore
@@ -26,20 +26,21 @@ jobs:
         run: dotnet test --no-build --collect:"XPlat Code Coverage" --results-directory ./TestResults
 
       - name: Download coverage results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: coverage-results
           path: ./TestResults
 
+      - name: Install ReportGenerator tool
+        run: dotnet tool install --global dotnet-reportgenerator-globaltool
+
       - name: Generate coverage report
-        uses: danielpalme/ReportGenerator@v5.1.23
-        with:
-          reports: './TestResults/*/coverage.cobertura.xml'
-          targetdir: './coverage-report'
-          reporttypes: 'Html'
+        run: |
+          export PATH="$PATH:/home/runner/.dotnet/tools"
+          reportgenerator -reports:'./TestResults/*/coverage.cobertura.xml' -targetdir:'./coverage-report' -reporttypes:Html
 
       - name: Upload coverage report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: coverage-report
           path: coverage-report
@@ -48,7 +49,7 @@ jobs:
         run: |
           dotnet tool install --global coverlet.console
           export PATH="$PATH:/home/runner/.dotnet/tools"
-          coverlet ./path/to/your/test/project/bin/Debug/net7.0/YourTestProject.dll \
+          coverlet ./TicTacToe.Tests/bin/Debug/net9.0/TicTacToe.Tests.dll \
             --target "dotnet" \
             --targetargs "test --no-build" \
             --threshold 30 \
