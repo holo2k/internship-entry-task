@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacToeApi", "tictactoeapi\TicTacToeApi.csproj", "{B0F4F6F9-93BC-4A0B-848E-AEA853A5B3B2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacToeApi", "TicTacToeApi\TicTacToeApi.csproj", "{B0F4F6F9-93BC-4A0B-848E-AEA853A5B3B2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{307E985F-A0B2-450D-AC1A-6F44E98E6DD9}"
 EndProject
@@ -11,9 +11,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{01F40EB7-E7A3-4901-93FF-5F20333A836D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tictactoe.tests", "tictactoe.tests", "{3A0E716C-E607-6947-2367-FE4C4104385C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TicTacToe.Tests", "TicTacToe.Tests", "{3A0E716C-E607-6947-2367-FE4C4104385C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacToe.Tests", "tictactoe.tests\TicTacToe.Tests.csproj", "{3FB569AC-9A41-482C-AFD4-A977D9628A6E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacToe.Tests", "TicTacToe.Tests\TicTacToe.Tests.csproj", "{3FB569AC-9A41-482C-AFD4-A977D9628A6E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{156AA220-C01A-4385-9E57-3B7315D467D0}"
 EndProject
