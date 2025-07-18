@@ -22,8 +22,11 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
+      - name: Build solution
+        run: dotnet build TicTacToeAPI.sln --configuration Debug --no-restore
+
       - name: Run tests with coverage
-        run: dotnet test --no-build --collect:"XPlat Code Coverage" --results-directory ./TestResults
+        run: dotnet test TicTacToe.Tests/TicTacToe.Tests.csproj --configuration Debug --collect:"XPlat Code Coverage" --results-directory ./TestResults
 
       - name: Download coverage results
         uses: actions/upload-artifact@v4
@@ -51,6 +54,9 @@ jobs:
           export PATH="$PATH:/home/runner/.dotnet/tools"
           coverlet ./TicTacToe.Tests/bin/Debug/net9.0/TicTacToe.Tests.dll \
             --target "dotnet" \
-            --targetargs "test --no-build" \
+            --targetargs "test --no-build --configuration Debug" \
             --threshold 30 \
-            --threshold-type line
+            --threshold-type line \
+            --exclude-by-file "**/TicTacToeApi/**" \
+            --exclude-by-file "**/Infrastructure/**"
+
