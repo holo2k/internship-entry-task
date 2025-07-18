@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacToeApi", "TicTacToeApi\TicTacToeApi.csproj", "{B0F4F6F9-93BC-4A0B-848E-AEA853A5B3B2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacToeAPI", "TicTacToeAPI\TicTacToeApi.csproj", "{B0F4F6F9-93BC-4A0B-848E-AEA853A5B3B2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{307E985F-A0B2-450D-AC1A-6F44E98E6DD9}"
 EndProject
